@@ -46,21 +46,23 @@ public class ListDevices extends ListActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_list_devices);
 		getListView().setBackgroundColor(Color.WHITE);
-		
-		devicesList = new ArrayList<BluetoothDevice>();
+	}	
+	
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
 		
 		getBTDevices();
-
-		createAndSetDevicesList();
-	}	
+		createAndSetDevicesList();		
+		setContentView(R.layout.activity_list_devices);
+	}
 
 	private void createAndSetDevicesList()
 	{
 		extractDevicesNames();
 		setListAdapter(createAdapter());
-		recreate();
 	}
 
 	private void extractDevicesNames()
@@ -110,6 +112,7 @@ public class ListDevices extends ListActivity
 	
 	private void getPairedDevices()
 	{
+		devicesList = new ArrayList<BluetoothDevice>();
 		devicesList.addAll(mBluetoothAdapter.getBondedDevices());
 	}
 
@@ -143,10 +146,10 @@ public class ListDevices extends ListActivity
 	private void showCannotEnableBTAlert()
 	{
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();               
-        alertDialog.setTitle("Transformers");
-        alertDialog.setMessage("Optimus Prime");
+        alertDialog.setTitle(getString(R.string.app_needs_bt_title));
+        alertDialog.setMessage(getString(R.string.app_needs_bt_text));
         alertDialog.setButton(	DialogInterface.BUTTON_POSITIVE, 
-        						getString(android.R.string.yes), 
+        						getString(R.string.app_needs_bt_yes), 
         						new OnClickListener() {									
 									@Override
 									public void onClick(DialogInterface dialog, int which)
@@ -155,7 +158,7 @@ public class ListDevices extends ListActivity
 									}
 								});
         alertDialog.setButton(	DialogInterface.BUTTON_NEGATIVE, 
-								getString(android.R.string.no), 
+								getString(R.string.app_needs_bt_no), 
 								new OnClickListener() {									
 									@Override
 									public void onClick(DialogInterface dialog, int which)

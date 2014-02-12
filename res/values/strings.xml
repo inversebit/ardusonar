@@ -22,5 +22,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_list_devices">Ardusonar</string>
     <string name="title_activity_transmission">TransmissionActivity</string>
-
+	<string name="app_needs_bt_title">Bluettoth activation cancelled</string>
+	<string name="app_needs_bt_text">This app needs bluetooth to work.
+	    Would you like to retry enabling it?</string>
+   <string name="app_needs_bt_yes">Retry</string>
+   <string name="app_needs_bt_no">Close app</string>
+    
 </resources>
