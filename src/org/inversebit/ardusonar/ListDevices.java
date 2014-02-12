@@ -50,13 +50,12 @@ public class ListDevices extends ListActivity
 	}	
 	
 	@Override
-	protected void onStart()
+	protected void onResume()
 	{
 		super.onResume();
-		
 		getBTDevices();
 		createAndSetDevicesList();		
-		setContentView(R.layout.activity_list_devices);
+		setContentView(R.layout.activity_list_devices);		
 	}
 
 	private void createAndSetDevicesList()
@@ -111,14 +110,15 @@ public class ListDevices extends ListActivity
 	}
 	
 	private void getPairedDevices()
-	{
+	{	
 		devicesList = new ArrayList<BluetoothDevice>();
 		devicesList.addAll(mBluetoothAdapter.getBondedDevices());
 	}
 
 	private void showNoBTAlertAndFinish()
 	{
-		AlertDialog alertDialog = new AlertDialog.Builder(ListDevices.this).create();               
+		AlertDialog alertDialog = new AlertDialog.Builder(ListDevices.this).create();  
+		alertDialog.setCancelable(false);
         alertDialog.setTitle("Transformers");
         alertDialog.setMessage("Optimus Prime");
         alertDialog.setButton(	DialogInterface.BUTTON_NEUTRAL, 
@@ -131,6 +131,8 @@ public class ListDevices extends ListActivity
 									}
 								});
         alertDialog.show();
+       
+        
 	}
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -145,7 +147,8 @@ public class ListDevices extends ListActivity
 
 	private void showCannotEnableBTAlert()
 	{
-		AlertDialog alertDialog = new AlertDialog.Builder(this).create();               
+		AlertDialog alertDialog = new AlertDialog.Builder(this).create();  
+		alertDialog.setCancelable(false);
         alertDialog.setTitle(getString(R.string.app_needs_bt_title));
         alertDialog.setMessage(getString(R.string.app_needs_bt_text));
         alertDialog.setButton(	DialogInterface.BUTTON_POSITIVE, 
