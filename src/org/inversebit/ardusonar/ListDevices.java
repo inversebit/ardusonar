@@ -17,9 +17,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package org.inversebit.ardusonar;
 
 
-import org.inversebit.ardusonar.R;
+import java.util.ArrayList;
+import java.util.Iterator;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -31,28 +37,143 @@ import android.widget.ListView;
 
 
 public class ListDevices extends ListActivity
-{
+{	
+	private BluetoothAdapter mBluetoothAdapter;
+	private ArrayList<BluetoothDevice> devicesList;
+	private String[] devicesNames;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list_devices);
+		getListView().setBackgroundColor(Color.WHITE);
 		
-		getListView().setBackgroundColor(Color.BLACK);
+		devicesList = new ArrayList<BluetoothDevice>();
 		
-		Intent intent = getIntent();
-		ArrayAdapter<String> aa = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1);
-		
-		String[] devices = ((String)intent.getCharSequenceExtra("devices")).split(";");
-		
-		for(String device:devices)
-		{
-			aa.add(device);
-		}
-		
-		setListAdapter(aa);
+		getBTDevices();
+
+		createAndSetDevicesList();
+	}	
+
+	private void createAndSetDevicesList()
+	{
+		extractDevicesNames();
+		setListAdapter(createAdapter());
+		recreate();
 	}
+
+	private void extractDevicesNames()
+	{
+		int i = 0;
+		devicesNames = new String[devicesList.size()];
+		
+		Iterator<BluetoothDevice> btDeviceIterator = devicesList.iterator();
+		while(btDeviceIterator.hasNext()){
+			devicesNames[i] = btDeviceIterator.next().getName();
+			i++;
+		}
+	}
+
+	private ArrayAdapter<String> createAdapter()
+	{		
+		return new ArrayAdapter<String>(this,
+										android.R.layout.simple_list_item_1,
+										devicesNames);
+	}
+
+
+	private void getBTDevices()
+	{
+		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		
+		if (mBluetoothAdapter == null) 
+		{
+		    showNoBTAlertAndFinish();
+		}
+		else
+		{
+			if (!mBluetoothAdapter.isEnabled()) 
+			{
+				enableBluetooth();
+			}
+			
+			getPairedDevices();
+		}			
+	}
+
+	private void enableBluetooth()
+	{
+		Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+		startActivityForResult(enableBtIntent, Constants.REQUEST_ENABLE_BT);
+	}
+	
+	private void getPairedDevices()
+	{
+		devicesList.addAll(mBluetoothAdapter.getBondedDevices());
+	}
+
+	private void showNoBTAlertAndFinish()
+	{
+		AlertDialog alertDialog = new AlertDialog.Builder(this).create();               
+        alertDialog.setTitle("Transformers");
+        alertDialog.setMessage("Optimus Prime");
+        alertDialog.setButton(	DialogInterface.BUTTON_NEUTRAL, 
+        						getString(android.R.string.cancel), 
+        						new OnClickListener() {									
+									@Override
+									public void onClick(DialogInterface dialog, int which)
+									{		
+										finish();
+									}
+								});
+        alertDialog.show();
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.REQUEST_ENABLE_BT) 
+        {
+            if (resultCode != RESULT_OK) 
+            {
+            	showCannotEnableBTAlert();
+            }
+        }
+	}
+
+	private void showCannotEnableBTAlert()
+	{
+		AlertDialog alertDialog = new AlertDialog.Builder(this).create();               
+        alertDialog.setTitle("Transformers");
+        alertDialog.setMessage("Optimus Prime");
+        alertDialog.setButton(	DialogInterface.BUTTON_POSITIVE, 
+        						getString(android.R.string.yes), 
+        						new OnClickListener() {									
+									@Override
+									public void onClick(DialogInterface dialog, int which)
+									{		
+										getBTDevices();
+									}
+								});
+        alertDialog.setButton(	DialogInterface.BUTTON_NEGATIVE, 
+								getString(android.R.string.no), 
+								new OnClickListener() {									
+									@Override
+									public void onClick(DialogInterface dialog, int which)
+									{	
+										finish();
+									}
+								});
+        alertDialog.show();
+	}
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id)
+	{
+		super.onListItemClick(l, v, position, id);
+		
+		Log.d(Constants.TAG, "" + position);
+	}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -61,16 +182,5 @@ public class ListDevices extends ListActivity
 		getMenuInflater().inflate(R.menu.list_devices, menu);
 		return true;
 	}
-
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id)
-	{
-		super.onListItemClick(l, v, position, id);
-		
-		Log.d(MainActivity.TAG, "" + position);
-		
-		Intent intent = this.getIntent();
-		this.setResult(position + 1, intent); //+1 to avoid confussion with RESULT_CANCELLED
-		finish();
-	}
+	
 }

@@ -98,7 +98,7 @@ public class TransmissionActivity extends Activity
 		    btdOutStr = btdSocket.getOutputStream();
 		    btdInStr = btdSocket.getInputStream();
 
-		    Log.d(MainActivity.TAG, "Connected BTSocket");
+		    Log.d(Constants.TAG, "Connected BTSocket");
 		}
 		catch (IOException e)
 		{
@@ -187,7 +187,7 @@ public class TransmissionActivity extends Activity
 		}
 		catch (IOException e)
 		{
-			Log.d(MainActivity.TAG, "Could not close BT socket");
+			Log.d(Constants.TAG, "Could not close BT socket");
 			e.printStackTrace();
 		}
 	}

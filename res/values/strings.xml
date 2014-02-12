@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="app_name">Ardusonar</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_list_devices">ListDevices</string>
+    <string name="title_activity_list_devices">Ardusonar</string>
     <string name="title_activity_transmission">TransmissionActivity</string>
 
 </resources>
