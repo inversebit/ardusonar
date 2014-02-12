@@ -50,7 +50,7 @@ public class ListDevices extends ListActivity
 	}	
 	
 	@Override
-	protected void onResume()
+	protected void onStart()
 	{
 		super.onResume();
 		
@@ -99,7 +99,7 @@ public class ListDevices extends ListActivity
 			{
 				enableBluetooth();
 			}
-			
+
 			getPairedDevices();
 		}			
 	}
@@ -118,7 +118,7 @@ public class ListDevices extends ListActivity
 
 	private void showNoBTAlertAndFinish()
 	{
-		AlertDialog alertDialog = new AlertDialog.Builder(this).create();               
+		AlertDialog alertDialog = new AlertDialog.Builder(ListDevices.this).create();               
         alertDialog.setTitle("Transformers");
         alertDialog.setMessage("Optimus Prime");
         alertDialog.setButton(	DialogInterface.BUTTON_NEUTRAL, 
