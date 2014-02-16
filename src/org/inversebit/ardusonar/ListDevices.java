@@ -29,7 +29,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -188,7 +187,9 @@ public class ListDevices extends ListActivity
 	{
 		super.onListItemClick(l, v, position, id);
 		
-		Log.d(Constants.TAG, "" + position);
+		Intent intent = new Intent(l.getContext(), TransmissionActivity.class);
+		intent.putExtra("btd", devicesList.get(position));
+		startActivity(intent);
 	}
 
 
