@@ -25,6 +25,7 @@ import java.util.TimerTask;
 import java.util.UUID;
 
 import org.inversebit.ardusonar.R;
+import org.inversebit.ardusonar.CustomViews.GraphView;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
