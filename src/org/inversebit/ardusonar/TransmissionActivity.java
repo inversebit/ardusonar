@@ -61,6 +61,8 @@ public class TransmissionActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		
+		tim = new Timer();
+		
 		points = new float[MAX_POINTS];
 		
 		clockwise = true;
@@ -119,8 +121,6 @@ public class TransmissionActivity extends Activity
 			e.printStackTrace();
 		}
 		
-		//(new PollUltraSound((TextView)findViewById(R.id.tvDistance))).execute(btdSocket);
-		tim = new Timer();
 		tim.scheduleAtFixedRate(new TimerTask() 
 		{
 			@Override
