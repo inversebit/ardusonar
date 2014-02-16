@@ -50,18 +50,25 @@ public class ListDevices extends ListActivity
 	}	
 	
 	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		getBTDevices();
+	}
+	
+	@Override
 	protected void onResume()
 	{
 		super.onResume();
-		getBTDevices();
-		createAndSetDevicesList();		
-		setContentView(R.layout.activity_list_devices);		
+		
+		createSetShowDevicesList();				
 	}
 
-	private void createAndSetDevicesList()
+	private void createSetShowDevicesList()
 	{
 		extractDevicesNames();
 		setListAdapter(createAdapter());
+		setContentView(R.layout.activity_list_devices);
 	}
 
 	private void extractDevicesNames()
@@ -141,6 +148,10 @@ public class ListDevices extends ListActivity
             if (resultCode != RESULT_OK) 
             {
             	showCannotEnableBTAlert();
+            }
+            else
+            {
+            	getPairedDevices();
             }
         }
 	}
