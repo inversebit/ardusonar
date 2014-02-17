@@ -90,12 +90,12 @@ public class TransmissionActivity extends Activity
 	{
 		super.onStart();
 		
-		btd = getIntent().getParcelableExtra("btd");		
+		btd = getIntent().getParcelableExtra("btd");
+		Log.d(Constants.TAG, "UUID: " + btd.getUuids()[0]);
 		UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 		
 		try
 		{
-			btd.createRfcommSocketToServiceRecord(uuid);
 			btdSocket = btd.createRfcommSocketToServiceRecord(uuid);
 		    btdSocket.connect();
 		    btdOutStr = btdSocket.getOutputStream();
