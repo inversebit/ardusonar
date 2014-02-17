@@ -22,13 +22,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.UUID;
 
-import org.inversebit.ardusonar.R;
 import org.inversebit.ardusonar.CustomViews.GraphView;
 
 import android.app.Activity;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -51,7 +48,6 @@ public class TransmissionActivity extends Activity
 	private static Timer tim;
 	
 	private static boolean clockwise;
-	private BluetoothDevice btd;
 	private BluetoothSocket btdSocket;
 	private OutputStream btdOutStr;
 	private InputStream btdInStr;
@@ -90,13 +86,10 @@ public class TransmissionActivity extends Activity
 	{
 		super.onStart();
 		
-		btd = getIntent().getParcelableExtra("btd");
-		Log.d(Constants.TAG, "UUID: " + btd.getUuids()[0]);
-		UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+		btdSocket = getIntent().getParcelableExtra("btd");
 		
 		try
 		{
-			btdSocket = btd.createRfcommSocketToServiceRecord(uuid);
 		    btdSocket.connect();
 		    btdOutStr = btdSocket.getOutputStream();
 		    btdInStr = btdSocket.getInputStream();

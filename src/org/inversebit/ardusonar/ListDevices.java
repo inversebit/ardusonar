@@ -187,8 +187,18 @@ public class ListDevices extends ListActivity
 	{
 		super.onListItemClick(l, v, position, id);
 		
+		if(deviceIsConnectable()){
+			launchTransmissionActivity(l, position);
+		}
+		else{
+			showNotConnectableToast();
+		}		
+	}
+
+	private void launchTransmissionActivity(ListView l, int position)
+	{
 		Intent intent = new Intent(l.getContext(), TransmissionActivity.class);
-		intent.putExtra("btd", devicesList.get(position));
+		intent.putExtra("btdsocket", getSelectedDeviceSocket());
 		startActivity(intent);
 	}
 
