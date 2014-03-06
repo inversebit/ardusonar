@@ -23,7 +23,7 @@ import java.io.OutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.inversebit.ardusonar.CustomViews.GraphView;
+import org.inversebit.ardusonar.customviews.GraphView;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothSocket;
@@ -86,11 +86,10 @@ public class TransmissionActivity extends Activity
 	{
 		super.onStart();
 		
-		btdSocket = getIntent().getParcelableExtra("btd");
+		btdSocket = SocketHolder.getMySH().getBluetoothSocket();
 		
 		try
 		{
-		    btdSocket.connect();
 		    btdOutStr = btdSocket.getOutputStream();
 		    btdInStr = btdSocket.getInputStream();
 
@@ -177,7 +176,7 @@ public class TransmissionActivity extends Activity
 		{
 			btdOutStr.close();
 			btdInStr.close();
-			btdSocket.close();
+			SocketHolder.getMySH().releaseBluetoothSocket();
 		}
 		catch (IOException e)
 		{

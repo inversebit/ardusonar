@@ -33,6 +33,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 public class ListDevices extends ListActivity
@@ -54,7 +55,7 @@ public class ListDevices extends ListActivity
 		super.onStart();
 		getBTDevices();
 	}
-	
+
 	@Override
 	protected void onResume()
 	{
@@ -141,20 +142,6 @@ public class ListDevices extends ListActivity
         
 	}
 	
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.REQUEST_ENABLE_BT) 
-        {
-            if (resultCode != RESULT_OK) 
-            {
-            	showCannotEnableBTAlert();
-            }
-            else
-            {
-            	getPairedDevices();
-            }
-        }
-	}
-
 	private void showCannotEnableBTAlert()
 	{
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();  
@@ -187,18 +174,32 @@ public class ListDevices extends ListActivity
 	{
 		super.onListItemClick(l, v, position, id);
 		
-		if(deviceIsConnectable()){
-			launchTransmissionActivity(l, position);
-		}
-		else{
-			showNotConnectableToast();
-		}		
+		getDeviceSocketAndAttempConnection(position);
 	}
 
-	private void launchTransmissionActivity(ListView l, int position)
+	private void getDeviceSocketAndAttempConnection(int position)
+	{	
+		Intent intent = new Intent(getBaseContext(), SocketGetter.class);
+		intent.putExtra(Constants.deviceExtra, devicesList.get(position));
+		startActivityForResult(intent, Constants.REQUEST_SOCKET_CONNECTION);
+	}
+
+	private boolean deviceIsConnectable()
 	{
-		Intent intent = new Intent(l.getContext(), TransmissionActivity.class);
-		intent.putExtra("btdsocket", getSelectedDeviceSocket());
+		return SocketHolder.getMySH().getBluetoothSocket() != null;
+	}
+
+	private void showNotConnectableToast()
+	{
+		Toast.makeText(
+					getApplicationContext(), 
+					getString(R.string.device_not_available), 
+					Toast.LENGTH_SHORT).show();		
+	}
+	
+	private void launchTransmissionActivity()
+	{
+		Intent intent = new Intent(getBaseContext(), TransmissionActivity.class);
 		startActivity(intent);
 	}
 
@@ -209,6 +210,49 @@ public class ListDevices extends ListActivity
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.list_devices, menu);
 		return true;
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    switch(requestCode){		
+	    	case Constants.REQUEST_ENABLE_BT: 
+		        dealWithEnableBTRequest(resultCode);
+		        break;
+		        
+			case Constants.REQUEST_SOCKET_CONNECTION:				
+				dealWithSocketConnectionRequest();
+				break;
+	    }
+	}
+
+	private void dealWithSocketConnectionRequest()
+	{
+		if(deviceIsConnectable()){
+			showConnectedToDeviceToast();
+			launchTransmissionActivity();
+		}
+		else{
+			showNotConnectableToast();
+		}
+	}
+
+	private void dealWithEnableBTRequest(int resultCode)
+	{
+		if (resultCode != RESULT_OK) 
+		{
+			showCannotEnableBTAlert();
+		}
+		else
+		{
+			getPairedDevices();
+		}
+	}
+
+	private void showConnectedToDeviceToast()
+	{
+		Toast.makeText(
+				getApplicationContext(), 
+				getString(R.string.connected_to_device), 
+				Toast.LENGTH_SHORT).show();		
 	}
 	
 }
