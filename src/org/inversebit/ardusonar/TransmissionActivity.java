@@ -27,6 +27,7 @@ import org.inversebit.ardusonar.customviews.GraphView;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothSocket;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,6 +58,7 @@ public class TransmissionActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		
 		tim = new Timer();
 		
