@@ -55,13 +55,6 @@ public class ListDevices extends ListActivity
 		super.onStart();
 		getBTDevices();
 	}
-	
-	@Override
-	protected void onStop()
-	{
-		super.onStop();
-		SocketHolder.getMySH().releaseBluetoothSocket();
-	}
 
 	@Override
 	protected void onResume()
