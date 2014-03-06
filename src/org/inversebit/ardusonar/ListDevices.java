@@ -57,6 +57,13 @@ public class ListDevices extends ListActivity
 	}
 	
 	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		SocketHolder.getMySH().releaseBluetoothSocket();
+	}
+
+	@Override
 	protected void onResume()
 	{
 		super.onResume();
@@ -142,20 +149,6 @@ public class ListDevices extends ListActivity
         
 	}
 	
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.REQUEST_ENABLE_BT) 
-        {
-            if (resultCode != RESULT_OK) 
-            {
-            	showCannotEnableBTAlert();
-            }
-            else
-            {
-            	getPairedDevices();
-            }
-        }
-	}
-
 	private void showCannotEnableBTAlert()
 	{
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();  
@@ -188,18 +181,14 @@ public class ListDevices extends ListActivity
 	{
 		super.onListItemClick(l, v, position, id);
 		
-		getDeviceSocket(position);
-		if(deviceIsConnectable()){			
-			launchTransmissionActivity();
-		}
-		else{
-			showNotConnectableToast();
-		}	
+		getDeviceSocketAndAttempConnection(position);
 	}
 
-	private void getDeviceSocket(int position)
+	private void getDeviceSocketAndAttempConnection(int position)
 	{	
-		new GetSocketTask().execute(devicesList.get(position));		
+		Intent intent = new Intent(getBaseContext(), SocketGetter.class);
+		intent.putExtra(Constants.deviceExtra, devicesList.get(position));
+		startActivityForResult(intent, Constants.REQUEST_SOCKET_CONNECTION);
 	}
 
 	private boolean deviceIsConnectable()
@@ -230,11 +219,47 @@ public class ListDevices extends ListActivity
 		return true;
 	}
 	
-	@Override
-	protected void onStop()
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    switch(requestCode){		
+	    	case Constants.REQUEST_ENABLE_BT: 
+		        dealWithEnableBTRequest(resultCode);
+		        break;
+		        
+			case Constants.REQUEST_SOCKET_CONNECTION:				
+				dealWithSocketConnectionRequest();
+				break;
+	    }
+	}
+
+	private void dealWithSocketConnectionRequest()
 	{
-		super.onStop();
-		SocketHolder.getMySH().releaseBluetoothSocket();
+		if(deviceIsConnectable()){
+			showConnectedToDeviceToast();
+			launchTransmissionActivity();
+		}
+		else{
+			showNotConnectableToast();
+		}
+	}
+
+	private void dealWithEnableBTRequest(int resultCode)
+	{
+		if (resultCode != RESULT_OK) 
+		{
+			showCannotEnableBTAlert();
+		}
+		else
+		{
+			getPairedDevices();
+		}
+	}
+
+	private void showConnectedToDeviceToast()
+	{
+		Toast.makeText(
+				getApplicationContext(), 
+				getString(R.string.connected_to_device), 
+				Toast.LENGTH_SHORT).show();		
 	}
 	
 }

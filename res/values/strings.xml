@@ -13,7 +13,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources>
 
@@ -22,11 +22,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_list_devices">Ardusonar</string>
     <string name="title_activity_transmission">TransmissionActivity</string>
-	<string name="app_needs_bt_title">Bluettoth activation cancelled</string>
-	<string name="app_needs_bt_text">This app needs bluetooth to work.
+    <string name="app_needs_bt_title">Bluettoth activation cancelled</string>
+    <string name="app_needs_bt_text">This app needs bluetooth to work.
 	    Would you like to retry enabling it?</string>
-   <string name="app_needs_bt_yes">Retry</string>
-   <string name="app_needs_bt_no">Close app</string>
-   <string name="device_not_available">The device is not available</string>
+    <string name="app_needs_bt_yes">Retry</string>
+    <string name="app_needs_bt_no">Close app</string>
+    <string name="device_not_available">The device is not available</string>
+    <string name="title_activity_get_socket">GetSocket</string>
+    <string name="attempting_connection">Connecting</string>
+    <string name="connected_to_device">Connected to device</string>
     
+    
+
 </resources>
