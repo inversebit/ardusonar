@@ -34,7 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         android:text="Start polling" 
         android:onClick="startPolling"/>
 
-    <org.inversebit.ardusonar.CustomViews.GraphView
+    <org.inversebit.ardusonar.customviews.GraphView
         android:id="@+id/graphView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
