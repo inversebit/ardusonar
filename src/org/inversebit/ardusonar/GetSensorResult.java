@@ -19,7 +19,7 @@ package org.inversebit.ardusonar;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.inversebit.ardusonar.CustomViews.GraphView;
+import org.inversebit.ardusonar.customviews.GraphView;
 
 import android.os.AsyncTask;
 import android.util.Log;
