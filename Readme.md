@@ -4,7 +4,13 @@ Ardusonar
 A simple sonar for android made with arduino. Let's you know the distance at which the objects in the vicinity of the sonar are.
 The sonar is made with an ultrasound sensor which sweeps continuosly clockwise and counterclockwise. The collected data is transmitted via bluetooth to an android tablet or smartphone. There it is represented in a simple, understandable way.
 
-Structure
+Branching
+---------
+The _master_ branch will always have a stable version of the project, which compiles and works. Major releases will be marked with a tag.  
+The _develop_ branch will have the most recent changes, but may be unstable or even may not compile.
+
+
+Project structure
 ---------
 
 This project consists of two programs: 
