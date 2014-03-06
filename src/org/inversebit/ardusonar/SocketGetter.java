@@ -4,13 +4,12 @@ package org.inversebit.ardusonar;
 import java.io.IOException;
 import java.util.UUID;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 
 
 public class SocketGetter extends Activity
