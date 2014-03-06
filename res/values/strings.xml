@@ -27,5 +27,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	    Would you like to retry enabling it?</string>
    <string name="app_needs_bt_yes">Retry</string>
    <string name="app_needs_bt_no">Close app</string>
+   <string name="device_not_available">The device is not available</string>
     
 </resources>

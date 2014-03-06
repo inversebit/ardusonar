@@ -33,6 +33,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 public class ListDevices extends ListActivity
@@ -187,18 +188,36 @@ public class ListDevices extends ListActivity
 	{
 		super.onListItemClick(l, v, position, id);
 		
-		if(deviceIsConnectable()){
-			launchTransmissionActivity(l, position);
+		getDeviceSocket(position);
+		if(deviceIsConnectable()){			
+			launchTransmissionActivity();
 		}
 		else{
 			showNotConnectableToast();
-		}		
+		}	
 	}
 
-	private void launchTransmissionActivity(ListView l, int position)
+	private void getDeviceSocket(int position)
+	{	
+		new GetSocketTask().execute(devicesList.get(position));		
+	}
+
+	private boolean deviceIsConnectable()
 	{
-		Intent intent = new Intent(l.getContext(), TransmissionActivity.class);
-		intent.putExtra("btdsocket", getSelectedDeviceSocket());
+		return SocketHolder.getMySH().getBluetoothSocket() != null;
+	}
+
+	private void showNotConnectableToast()
+	{
+		Toast.makeText(
+					getApplicationContext(), 
+					getString(R.string.device_not_available), 
+					Toast.LENGTH_SHORT).show();		
+	}
+	
+	private void launchTransmissionActivity()
+	{
+		Intent intent = new Intent(getBaseContext(), TransmissionActivity.class);
 		startActivity(intent);
 	}
 
@@ -209,6 +228,13 @@ public class ListDevices extends ListActivity
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.list_devices, menu);
 		return true;
+	}
+	
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		SocketHolder.getMySH().releaseBluetoothSocket();
 	}
 	
 }
